@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+info:
+  app:
+    name: ${spring.application.name}
+    java:
+      version: ${java.version}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: shutdown
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: hr
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+  datasource:
+    url: ""
+    username: ""
+    password: ""
+    driver-class-name: ""
+    tomcat:
+      max-idle: 2
+      max-active: 10
+      test-on-borrow: true
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    show-sql: false
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    enabled: true
+    table: hr_service_schema_version
+
+hr:
+  http:
+    auth:
+      token-header-name: X-API-KEY
+      token: abc123

@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "3fca7994-c03e-4174-ae2b-8498e9aa94a8",
+		"name": "HR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create graph",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//should return 201 (created)",
+							"console.log(responseBody);",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"response is not empty\"] = (responseBody != null || responseBody.length >= 0);",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"graphId is not empty\"] = jsonData.id !== \"\";",
+							"",
+							"postman.setEnvironmentVariable(\"graphId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Pete\": \"Nick\",\n    \"Barbara\": \"Nick\",\n    \"Nick\": \"Sophie\",\n    \"Sophie\": \"Jonas\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/graphs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"graphs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get graph",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/graphs/{{graphId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"graphs",
+						"{{graphId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get inversed hierarchy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/graphs/{{graphId}}/filter?name=Pete&level=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"graphs",
+						"{{graphId}}",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Pete"
+						},
+						{
+							"key": "level",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "abc123",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-API-KEY",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

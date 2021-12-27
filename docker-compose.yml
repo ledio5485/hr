@@ -1,0 +1,46 @@
+version: "3"
+services:
+  # APP
+  challenge_hrapp:
+    container_name: challenge_hrapp
+    build: ./
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:15432/hrdb?currentSchema=hr&stringtype=unspecified&ApplicationName=hr
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_FLYWAY_SCHEMAS=hr
+    restart: unless-stopped
+    depends_on:
+      - challenge_hrdb
+    networks:
+      - hr_network
+  # PostgreSQL
+  challenge_hrdb:
+    container_name: challenge_hrdb
+    image: postgres:12.3-alpine
+    #volumes:
+    #  - hr_db:/var/lib/postgresql/data
+    expose:
+      - 15432
+    ports:
+      - 15432:15432
+    command:
+      -p 15432
+    environment:
+      - POSTGRES_DB=hrdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      #- PGDATA=/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    networks:
+      - hr_network
+volumes:
+  hr_db:
+networks:
+  hr_network:
+    driver: bridge
